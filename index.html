@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hang Man!!!</title>
+  <script type="text/javascript">
+      function startDrawing() {
+        drawDiagonal();
+        drawDiagonal2();
+      }
+
+      function drawDiagonal () {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.moveTo(0,0);
+        ctx.lineTo(400,600);
+        ctx.stroke();
+      }
+      function drawDiagonal2 () {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.moveTo(400,0);
+        ctx.lineTo(0,600);
+        ctx.stroke();
+      }
+  </script>
+</head>
+<body>
+  <canvas id="myCanvas" width="400" height="600" style="border:1px solid #d3d3d3;">
+  Your browser does not support the HTML5 canvas tag.</canvas>
+  <br/>
+  <button type="button" name="button" onclick="startDrawing();">Draw Diagonals</button>
+</body>
+</html>
