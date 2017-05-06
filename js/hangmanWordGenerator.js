@@ -1,3 +1,4 @@
+/**
 Copyright (c) 2011-2017 GitHub Inc.
 
 Permission is hereby granted, free of charge, to any person obtaining
@@ -23,6 +24,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 This application bundles the following third-party packages in accordance
 with the following licenses:
 
+-------------------------------------------------------------------------
 
 Package: *
 License: BSD
@@ -40,3 +42,16 @@ Redistributions in binary form must reproduce the above copyright notice, this l
 
 THIS IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS,
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-------------------------------------------------------------------------
+**/
+/**
+  Author: Rajat Luthra
+  Date:   May 6th, 2017.
+  Purpose: Hang Man game's word generator helper functions.
+**/
+var baseURI = "https://od-api.oxforddictionaries.com/api/v1";
+
+var supportedLanguage = ["en"];
+var supportedDomain   = ["Sport", "Art", "Computing", "Music", "Technology"];
+var wordLengthByLevel = ["3","4","5","6","7","8","9","10"];
