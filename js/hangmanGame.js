@@ -53,6 +53,52 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **/
 
 /** This method can be called by KeyPress, buttonPress etc.. **/
-function playGame(mySelection) {
+function displayWordToUser(parentObject, playWord) {
+  parentObject.innerHTML = '';
+  currentCharCount = playWord.length;
+  for (var i = 0; i < playWord.length; i++) {
+    createLetterPlaceHolder(i, parentObject);
+  }
+}
 
+function createLetterPlaceHolder(index, parentObject) {
+  var input = document.createElement("input");
+  input.type = "text";
+  input.readOnly = true;
+  input.style.width = "19px";
+  input.id = "letter" + index;
+  parentObject.appendChild(input);
+}
+
+function playGame(mySelection, parentObject, word) {
+  if(word.toLowerCase().includes(mySelection.toLowerCase())) {
+      var indices = getIndicesOf(mySelection.toLowerCase(), word.toLowerCase(), false);
+      for(var i=0;i<indices.length;i++) {
+        var keyIndex = "letter"+indices[i];
+        var selectedTextBox = document.getElementById(keyIndex);
+        if(selectedTextBox.value =="") {
+          currentCharCount--;
+          selectedTextBox.value = mySelection;
+        }
+      }
+  } else {
+    drawNext();
+  }
+}
+
+function getIndicesOf(searchStr, str, caseSensitive) {
+    var searchStrLen = searchStr.length;
+    if (searchStrLen == 0) {
+        return [];
+    }
+    var startIndex = 0, index, indices = [];
+    if (!caseSensitive) {
+        str = str.toLowerCase();
+        searchStr = searchStr.toLowerCase();
+    }
+    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+        indices.push(index);
+        startIndex = index + searchStrLen;
+    }
+    return indices;
 }

@@ -49,35 +49,99 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   Purpose: Hang Man game's canvas helper functions.
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Hang Man!!!</title>
+  <title>Hang Man Game !!!</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <!-- Add Bootstrap Themes Here (Just uncomment the ones below for example)-->
+  <link rel="stylesheet" href="https://bootswatch.com/cerulean/bootstrap.min.css">
+  <link rel="stylesheet" href="css/hangmanStyle.css">
+
   <script src="js/hangmanFrame.js" charset="utf-8"></script>
   <script src="js/hangmanGame.js" charset="utf-8"></script>
-  <script src="js/hangmanWordGenerator.js" charset="utf-8"></script>
+  <script src="js/hangmanUXHelper.js" charset="utf-8"></script>
+  <!-- <script src="js/hangmanWordGeneratorRemote.js" charset="utf-8"></script> -->
+  <script src="js/hangmanWordGeneratorLocal.js" charset="utf-8"></script>
   <script type="text/javascript">
-     var drawFunctions = [drawFrame, drawBase, mainBar, topBar,
-                          footRest, roap, hangManFace, hangManBody,
-                          hangManLHand, hangManRHand, hangManLFoot,
-                          hangManRFoot];
+     var drawFunctions = [drawBorder, drawStructure, roap, hangManFace,
+                          hangManBody, hangManLHand, hangManRHand,
+                          hangManLFoot, hangManRFoot];
+      var currentCtr = 0;
+      var level = 1;
+      var hangManWordList = undefined;
+      var currentCharCount = 0;
+      var word = 'DUMMY';
+      var gameOver = false;
 
-      function startDrawing() {
-        for (var index=0; index < drawFunctions.length; index++) {
-          var currentFunction = drawFunctions[index];
-          currentFunction.call();
-        }
+      function initGame() {
+        drawNext();
+        hangManWordList = getLocalWordList();
+        displayOptions(hangManWordList, level);
       }
   </script>
 </head>
-<body>
-  <canvas id="myCanvas" width="400" height="600" style="border:1px solid #d3d3d3;">
-  Your browser does not support the HTML5 canvas tag.</canvas>
-  <br/>
-  <button type="button" name="button" onclick="startDrawing();">Draw Diagonals</button>
+<body onload="initGame();">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-7">
+          <div class="page-header">
+            <h3>Hangman Game</h3>
+          </div>
+          <div class="row">
+            <section class="main-section">
+                <div class="col-md-7">
+                  <canvas id="myCanvas" width="300" height="400" style="border:1px solid #d3d3d3;">
+                  Your browser does not support the HTML5 canvas tag.</canvas>
+                  <br/>Note: Use keyboard for input.
+                </div>
+                <div class="col-md-5">
+                  <div id="displayWordLetters">
+                  </div>
+                  <h5 id="messageToUser"></h5>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <div class="panel-body">
+                  <h6>Player Inputs</h6>
+                  <ol id="myChoices"></ol>
+                </div>
+              </section>
+          </div>
+        </div>
+        <div class="col-md-5">
+         <!-- <div class="panel panel-default"> -->
+           <div class="page-header">
+             <h3>Options & Tally</h3>
+           </div>
+           <div>
+             Choose Category:&nbsp;&nbsp;<select id="wordsCategory" onchange="reset();"></select>
+             <br/><br/>
+             Press to Replay:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id = "reset" type="button" name="button" onclick="reset();">Play Again</button>
+           </div>
+           <!-- <div class="panel-body">
+             <h2>Game Options</h2>
+             <div>
+               <select id="wordsCategory" onchange="clearHelper();clearUserInputs();displayWord();"></select>
+               <button id = "reset" type="button" name="button" onclick="clearHelper();clearUserInputs();">Play Again</button>
+             </div>
+           </div> -->
+           <div class="panel-body">
+             <h4>Tally</h4>
+             <table id="scoreBoard">
+               <th>Word</html>
+               <th>Input</html>
+               <th>Won?</html>
+             </table>
+           </div>
+         <!-- </div> -->
+        </div>
+      </div>
+    </div>
 </body>
 </html>

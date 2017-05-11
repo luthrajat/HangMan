@@ -50,8 +50,41 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   Date:   May 6th, 2017.
   Purpose: Hang Man game's word generator helper functions.
 **/
-var baseURI = "https://od-api.oxforddictionaries.com/api/v1";
+var baseURI = "https://od-api.oxforddictionaries.com:443/api/v1";
+
+var creadsApiId = "5141fcd1";
+var creadsApiKey = "ed2c1f458631fc691b7a37a65a144e2c";
 
 var supportedLanguage = ["en"];
 var supportedDomain   = ["Sport", "Art", "Computing", "Music", "Technology"];
 var wordLengthByLevel = ["3","4","5","6","7","8","9","10"];
+
+var xhr = undefined;
+
+function getWordList() {
+    if (undefined==xhr) {
+      xhr = new XMLHttpRequest();
+    }
+    xhr.open("GET", generateQueryURL(), false);
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.setRequestHeader('app_id', creadsApiId);
+    xhr.setRequestHeader('app_key', creadsApiKey);
+    xhr.onload = function (e) {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          console.log(xhr.responseText);
+        } else {
+          console.error(xhr.statusText);
+        }
+      }
+    };
+    xhr.onerror = function (e) {
+      console.error(xhr.statusText);
+    };
+    xhr.send(null);
+}
+
+//https://od-api.oxforddictionaries.com:443/api/v1/wordlist/en/registers%3DRare%3Bdomains%3DArt
+function generateQueryURL() {
+  var query = baseURI + "/wordlist/" + supportedLanguage[0] +"/domains%3D"+ supportedDomain[0];
+}

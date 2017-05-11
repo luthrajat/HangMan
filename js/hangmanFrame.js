@@ -18,7 +18,7 @@ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+WITH THE SOFTWARE OR THErUSE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 This application bundles the following third-party packages in accordance
@@ -51,24 +51,46 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
   Purpose: Hang Man game's canvas helper functions.
 **/
-function drawFrame () {
+
+/**
+  Initilize the variables.
+**/
+
+/**
+  Canvas Border
+**/
+var borderGutter = 2.5;
+var borderWidth    = 5;
+
+/**
+  Hang Frame
+**/
+var frameGutter   = 0;
+var frameWidth    = 0;
+
+/**
+  Draw border to the canvas
+**/
+function drawBorder() {
   var c = document.getElementById("myCanvas");
   var ctx = c.getContext("2d");
-  ctx.moveTo(2,2);
-  ctx.lineTo(398,0);
-  ctx.lineTo(398,598);
-  ctx.lineTo(2,598);
-  ctx.lineTo(2,0);
-
+  ctx.beginPath();
+  ctx.moveTo(borderGutter,borderGutter);
+  ctx.lineTo(c.width-borderGutter,borderGutter);
+  ctx.lineTo(c.width-borderGutter,c.height-borderGutter);
+  ctx.lineTo(borderGutter,c.height-borderGutter);
+  ctx.lineTo(borderGutter,borderGutter);
+  ctx.lineWidth = borderWidth;
   ctx.strokeStyle = "#00f";
-  ctx.lineWidth = 4;
   ctx.stroke();
+
+  frameGutter = c.width*0.025;
+  frameWidth = c.width*0.025;
 }
 
-var frameLeft = 100;
-var toBarWidth = 95;
-var limbHeight = 30;
-
+/**
+  Draw border to the canvas
+**/
 draw = function(fromX, fromY, toX, toY, lineWidth) {
   var c = document.getElementById("myCanvas");
   var ctx = c.getContext('2d');
@@ -80,50 +102,126 @@ draw = function(fromX, fromY, toX, toY, lineWidth) {
   ctx.stroke();
 }
 
-drawBase = function() {
- draw (10, 590, toBarWidth*4, 590, 10);
+/**
+  clear athe canvas to be used for replay.
+**/
+clearCanvas = function() {
+  var c = document.getElementById("myCanvas");
+  var ctx = c.getContext('2d');
+  ctx.clearRect(0, 0, c.width, c.height);
 }
 
-mainBar = function() {
- draw (frameLeft, 10, frameLeft, 590, 10);
+/**
+  draw the base structure.
+**/
+drawStructure = function() {
+  var c = document.getElementById("myCanvas");
+  drawBase(c);
+  mainBar(c);
+  topBar(c);
+  footRest(c);
+}
+
+function drawNext() {
+    if(currentCtr<drawFunctions.length) {
+      var currentFunction = drawFunctions[currentCtr++];
+      currentFunction.call();
+    }
+}
+
+function drawGameMessage(message, success) {
+  var canvas = document.getElementById("myCanvas");
+  var ctx = canvas.getContext("2d");
+  ctx.font = "30px Arial";
+  ctx.fillText(message,canvas.width/3,canvas.height/1.5);
+}
+
+function clearHelper() {
+  clearCanvas();
+  drawBorder();
+  currentCtr = 0;
+  document.getElementById('displayWordLetters').innerHTML = '';
+  displayWord();
+}
+
+/**
+  Helper method to draw the base line.
+**/
+drawBase = function(myCanvas) {
+ draw (frameGutter, myCanvas.height-frameGutter, (frameGutter*9)*4, myCanvas.height-frameGutter, frameWidth);
+}
+
+/**
+  Helper method to draw the main vertical bar line.
+**/
+mainBar = function(myCanvas) {
+ draw (frameGutter*10, frameGutter, frameGutter*10, myCanvas.height-frameGutter, frameWidth);
 };
 
-topBar = function() {
- draw (frameLeft, 15, toBarWidth*2, 15, 10);
+/**
+  Helper method to draw the top bar.
+**/
+topBar = function(myCanvas) {
+ draw (frameGutter*10, frameGutter*1.5, (frameGutter*9)*2, frameGutter*1.5, frameWidth);
 };
 
-footRest = function() {
- draw (frameLeft, 200, toBarWidth*3, 200, 10);
+/**
+  Helper method to draw the rest bar.
+**/
+footRest = function(myCanvas) {
+  draw (frameGutter*10, myCanvas.height/2, (frameGutter*9)*3, myCanvas.height/2, frameWidth);
+// draw (frameLeft, 200, (frameGutter*9)*3, 200, 10);
 };
 
+/**
+  Helper method to draw the roap.
+**/
 roap = function() {
- draw (toBarWidth*2, 10, toBarWidth*2, 25, 1);
+ draw ((frameGutter*9)*2, frameGutter, (frameGutter*9)*2, frameGutter*3, 2);
 };
 
+/**
+  Helper method to draw the Hangman face.
+**/
 hangManFace = function() {
  c = document.getElementById("myCanvas");
  ctx = c.getContext('2d');
  ctx.beginPath();
- ctx.arc(toBarWidth*2, 35, 10, 0, Math.PI*2, true);
+ ctx.arc((frameGutter*9)*2, frameGutter*4, frameGutter, 0, Math.PI*2, true);
  ctx.stroke();
 }
 
+/**
+  Helper method to draw the Hangman body.
+**/
 hangManBody = function() {
- draw (toBarWidth*2, 45, toBarWidth*2, 100, 2);
+ draw ((frameGutter*9)*2, frameGutter*5, (frameGutter*9)*2, frameGutter*10, 2);
 }
 
+/**
+  Helper method to draw the Hangman Left Hand.
+**/
 hangManLHand = function() {
- draw (toBarWidth*2,55,(toBarWidth*2)-30,limbHeight, 2);
+ draw ((frameGutter*9)*2,frameGutter*6,((frameGutter*9)*2)-30,(frameGutter*3), 2);
 }
 
+/**
+  Helper method to draw the Hangman Right Hand.
+**/
 hangManRHand = function() {
-  draw (toBarWidth*2,55,(toBarWidth*2)+30,limbHeight, 2);
+  draw ((frameGutter*9)*2,frameGutter*6,((frameGutter*9)*2)+30,(frameGutter*3), 2);
 }
 
+/**
+  Helper method to draw the Hangman Left Foot.
+**/
 hangManLFoot = function() {
-  draw (toBarWidth*2,100,(toBarWidth*2)-30,limbHeight*5, 2);
+  draw ((frameGutter*9)*2,frameGutter*10,((frameGutter*9)*2)-30,(frameGutter*3)*5, 2);
 }
 
+/**
+  Helper method to draw the Hangman Right Foot.
+**/
 hangManRFoot = function() {
-  draw (toBarWidth*2,100,(toBarWidth*2)+30,limbHeight*5, 2);
+  draw ((frameGutter*9)*2,frameGutter*10,((frameGutter*9)*2)+30,(frameGutter*3)*5, 2);
 }
