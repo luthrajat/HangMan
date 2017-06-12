@@ -70,8 +70,9 @@ function updateScoreBoardOnScreen(actualWord, myWord, success) {
 }
 
 function isAlphabet(inputKeyCode) {
-  return ((inputKeyCode >= 65 && inputKeyCode <= 90)
-      || (inputKeyCode >= 97 && inputKeyCode <= 122));
+  return ((inputKeyCode == 32) ||
+          (inputKeyCode >= 65 && inputKeyCode <= 90) ||
+          (inputKeyCode >= 97 && inputKeyCode <= 122));
 }
 
 function displayMyChoices(key) {
